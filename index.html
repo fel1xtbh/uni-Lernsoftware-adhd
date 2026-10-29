@@ -1,1 +1,249 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="theme-color" content="#F0E8FC"><title>Uni-Begleiter</title>
+<link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F0E8FC;--card:#FAF6FF;--ink:#33224F;--mute:#7A669E;--line:#DCCDF3;--ac:#7C5CD0;--acd:#5B3FAE;--acl:#6A48C2;--fire:#FF8A1F;--ok:#21A366;--bad:#E5484D;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1B1030;--card:#291A47;--ink:#F1E9FF;--mute:#B7A5DC;--line:#40296B;--ac:#8B66E8;--acd:#6A47C6;--acl:#C2ACFF}}
+:root[data-theme="dark"]{--bg:#1B1030;--card:#291A47;--ink:#F1E9FF;--mute:#B7A5DC;--line:#40296B;--ac:#8B66E8;--acd:#6A47C6;--acl:#C2ACFF}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:600 16px/1.45 Nunito,system-ui,sans-serif;padding-bottom:96px}
+main{max-width:560px;margin:0 auto;padding:16px}
+h1{font-size:26px;font-weight:900;margin:4px 0 14px}
+h2{font-size:18px;font-weight:900;margin:0 0 10px}
+.card{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:16px;margin-bottom:14px}
+.mute{color:var(--mute);font-size:14px}
+.row{display:flex;gap:8px;align-items:center}
+.sp{justify-content:space-between}
+.wrap{flex-wrap:wrap}
+input,select{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:2px solid var(--line);border-radius:12px;padding:10px 12px;margin:0 0 8px;min-width:0}
+input:focus,select:focus,button:focus-visible{outline:3px solid var(--ac);outline-offset:1px}
+.btn{font:900 15px Nunito,sans-serif;background:var(--ac);color:#fff;border:0;border-bottom:4px solid var(--acd);border-radius:14px;padding:11px 18px;cursor:pointer}
+.btn:active{transform:translateY(3px);border-bottom-width:1px}
+.btn.sec{background:var(--card);color:var(--ink);border:2px solid var(--line);border-bottom-width:4px}
+.btn.ok{background:var(--ok);border-bottom-color:#157A4A}
+.btn.bad{background:var(--bad);border-bottom-color:#B02F34}
+.btn.big{width:100%;font-size:18px;padding:14px}
+.x{background:none;border:0;color:var(--mute);font-size:22px;cursor:pointer;padding:4px 8px}
+.seg{display:flex;gap:8px;margin-bottom:12px}
+.seg button{flex:1}
+.seg .on{background:var(--ac);color:#fff;border-color:var(--acd)}
+.streak{display:flex;align-items:center;gap:14px}
+.flame{font-size:54px;line-height:1}
+.num{font-size:44px;font-weight:900;line-height:1}
+.dots{display:flex;justify-content:space-between;margin-top:14px}
+.dot{text-align:center;font-size:12px;color:var(--mute)}
+.dot i{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--bg);border:2px solid var(--line);font-style:normal;margin:0 auto 3px}
+.dot.on i{background:#FFE3C2;border-color:var(--fire)}
+.dot.now i{border-color:var(--ac)}
+.timer{font-size:64px;font-weight:900;text-align:center;letter-spacing:2px;margin:6px 0 12px;font-variant-numeric:tabular-nums}
+.item{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:2px solid var(--line)}
+.item:first-of-type{border-top:0}
+.item .t{flex:1;min-width:0;overflow-wrap:anywhere}
+.item.d .t{text-decoration:line-through;color:var(--mute)}
+.chk{width:30px;height:30px;border-radius:9px;border:3px solid var(--line);background:var(--bg);color:#fff;font-size:18px;font-weight:900;cursor:pointer;flex:none;padding:0}
+.chk.on{background:var(--ok);border-color:var(--ok)}
+.tag{font-size:13px;font-weight:800;padding:3px 10px;border-radius:99px;background:var(--bg);color:var(--mute);white-space:nowrap}
+.tag.warn{background:#FFE3C2;color:#8A4300}
+.days{display:flex;gap:6px;margin-bottom:12px}
+.days button{flex:1;padding:10px 0}
+.q{font-size:22px;font-weight:900;text-align:center;margin:10px 0 18px;overflow-wrap:anywhere}
+.opt{display:block;width:100%;text-align:left;margin-bottom:8px}
+.opt.right{background:var(--ok);color:#fff;border-color:#157A4A}
+.opt.wrong{background:var(--bad);color:#fff;border-color:#B02F34}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:2px solid var(--line);display:flex;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));z-index:5}
+nav button{flex:1;background:none;border:0;font:800 11px Nunito,sans-serif;color:var(--mute);padding:6px 0;cursor:pointer;border-radius:12px}
+nav button b{display:block;font-size:22px;font-weight:400}
+nav button.on{color:var(--ac);background:var(--bg)}
+#toast{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:99px;font-weight:800;z-index:9;display:none}
+.rem{display:flex;gap:12px;align-items:center;background:var(--card);border:2px solid var(--ac);border-radius:18px;padding:12px 14px;margin-bottom:12px}
+.rem b{display:block}
+#quote{position:fixed;inset:0;z-index:20;background:var(--bg);display:grid;place-items:center;padding:calc(24px + env(safe-area-inset-top,0px)) 24px calc(24px + env(safe-area-inset-bottom,0px));text-align:center}
+#quote p{font-size:26px;font-weight:900;line-height:1.3;max-width:460px;margin:0 0 28px}
+#alarm:empty{display:none}#alarm{background:#D62B3A;color:#fff;font-weight:900;text-align:center;padding:10px 14px;font-size:15px}#alarm b{display:block;font-size:26px;font-variant-numeric:tabular-nums}
+@media(prefers-reduced-motion:no-preference){#alarm{animation:pulse 1.6s ease-in-out infinite}@keyframes pulse{50%{background:#A81C2A}}.btn{transition:transform .08s}}
+</style></head>
+<body>
+<div id="toast" role="status"></div>
+<div id="quote" role="dialog" aria-label="Motivation"></div>
+<div id="alarm"></div>
+<main id="main"></main>
+<nav id="nav" aria-label="Bereiche"></nav>
+<script>
+/* EINSTELLUNGEN: nach dem Server-Setup eintragen */
+const PUSH_URL='https://DEIN-SERVER',VAPID_PUBLIC='DEIN_PUBLIC_KEY';
+// The sync token is entered on this device and is not stored in the public source code.
+let SYNC_TOKEN='';
+const KEY='uni-app-v1';
+let S={plan:[],todo:[],exams:[],decks:[],streak:0,last:'',days:{},min:0};
+try{const r=localStorage.getItem(KEY);if(r)S=Object.assign(S,JSON.parse(r))}catch(x){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(x){}syncSoon()};
+var swReg=null,st;
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').then(r=>{swReg=r}).catch(()=>{});
+const b64=t=>{const r=atob((t+'='.repeat((4-t.length%4)%4)).replace(/-/g,'+').replace(/_/g,'/'));return Uint8Array.from([...r].map(c=>c.charCodeAt(0)))};
+async function subscribe(){
+ const p=await Notification.requestPermission();
+ if(p!=='granted')return p;
+ const reg=await navigator.serviceWorker.ready;swReg=reg;
+ if(!PUSH_URL.includes('DEIN')&&'PushManager' in window){const sb=(await reg.pushManager.getSubscription())||await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64(VAPID_PUBLIC)});try{localStorage.setItem('uni-sub',JSON.stringify(sb))}catch(x){}await syncPush()}
+ return p}
+function syncSoon(){clearTimeout(st);st=setTimeout(syncPush,1500)}
+async function syncPush(){try{const k=localStorage.getItem('uni-sub');if(!k||PUSH_URL.includes('DEIN'))return;SYNC_TOKEN=SYNC_TOKEN||localStorage.getItem('uni-sync-token')||'';if(!SYNC_TOKEN){SYNC_TOKEN=prompt('Gib deinen persönlichen Sync-Token ein, den du beim Server-Setup festlegst:')||'';if(!SYNC_TOKEN)return;localStorage.setItem('uni-sync-token',SYNC_TOKEN)}const response=await fetch(PUSH_URL+'/sync',{method:'POST',headers:{'Content-Type':'application/json','X-Sync-Token':SYNC_TOKEN},body:JSON.stringify({sub:JSON.parse(k),tz:new Date().getTimezoneOffset(),last:S.last,exams:S.exams.map(x=>({n:x.n,d:x.d,t:x.t,ok:x.ok}))})});if(response.status===401){localStorage.removeItem('uni-sync-token');SYNC_TOKEN='';toast('Sync-Token stimmt nicht. Bitte Benachrichtigungen erneut einschalten.')}}catch(x){}}
+if(!S.folders){const mk=(id,n,l)=>({id,n,subs:l.map((t,i)=>({id:id+i,n:t,c:[]}))});S.folders=[mk('f1','Anglistik',['Linguistik','Literaturwissenschaft','Sprachpraxis']),mk('f2','Geschichte',['Mittelalter','Frühe Neuzeit','Neuzeit']),mk('f3','Optionalbereich',['Allgemein'])];(S.decks||[]).forEach(d=>S.folders[2].subs.push({id:d.id,n:d.n,c:d.c}));S.decks=[]}
+S.notified=S.notified||{};
+const pad=n=>String(n).padStart(2,'0');
+const iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const addD=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+const today=()=>iso(new Date());
+const e=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const uid=()=>Math.random().toString(36).slice(2,9);
+const val=id=>document.getElementById(id).value.trim();
+const fmt=s=>pad(Math.floor(s/60))+':'+pad(s%60);
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const left=d=>Math.round((new Date(d+'T00:00')-new Date(today()+'T00:00'))/864e5);
+const dfmt=d=>new Date(d+'T00:00').toLocaleDateString('de-DE',{weekday:'short',day:'numeric',month:'short'});
+const DAYS=['Mo','Di','Mi','Do','Fr','Sa'];
+const wd=()=>(new Date().getDay()+6)%7;
+let toastT;
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.style.display='block';clearTimeout(toastT);toastT=setTimeout(()=>t.style.display='none',2600)}
 
+function streak(){const y=iso(addD(new Date(),-1));return(S.last===today()||S.last===y)?S.streak:0}
+function done(){const t=today();if(S.last!==t){S.streak=(S.last===iso(addD(new Date(),-1)))?S.streak+1:1;S.last=t}S.days[t]=1;save()}
+
+/* Fokus */
+let F={len:15,left:900,run:false,end:0,iv:null};
+function setLen(n){if(F.run||F.left!==F.len*60)return;F.len=n;F.left=n*60;render()}
+function startF(){F.run=true;F.end=Date.now()+F.left*1000;F.iv=setInterval(tick,500);render()}
+function pauseF(){F.left=Math.max(0,Math.round((F.end-Date.now())/1000));F.run=false;clearInterval(F.iv);render()}
+function stopF(){F.run=false;clearInterval(F.iv);F.left=F.len*60;render()}
+function tick(){F.left=Math.max(0,Math.round((F.end-Date.now())/1000));const el=document.getElementById('ft');if(el)el.textContent=fmt(F.left);
+ if(F.left<=0){clearInterval(F.iv);F.run=false;S.min+=F.len;done();F.left=F.len*60;toast('Fokus geschafft! Streak: '+streak()+' Tage');push('Fokus geschafft','Streak: '+streak()+' Tage');render()}}
+
+/* Ansichten */
+let tab='home';
+const TABS=[['home','🏠','Heute'],['plan','🗓️','Plan'],['todo','✏️','Aufgaben'],['exams','🎯','Termine'],['cards','🃏','Lernen'],['tips','💡','Methoden']];
+function render(){
+ document.getElementById('nav').innerHTML=TABS.map(t=>`<button class="${tab===t[0]?'on':''}" onclick="go('${t[0]}')"><b>${t[1]}</b>${t[2]}</button>`).join('');
+ document.getElementById('main').innerHTML=({home:vHome,plan:vPlan,todo:vTodo,exams:vExams,cards:vCards,tips:vTips})[tab]();
+}
+function go(t){tab=t;if(t!=='cards'){Q=null}render();scrollTo(0,0)}
+
+function vHome(){
+ const st=streak(),t=today(),ok=S.last===t;
+ const mo=addD(new Date(),-wd());
+ const dots=['Mo','Di','Mi','Do','Fr','Sa','So'].map((n,i)=>{const d=iso(addD(mo,i));return `<div class="dot ${S.days[d]?'on':''} ${d===t?'now':''}"><i>${S.days[d]?'🔥':''}</i>${n}</div>`}).join('');
+ const run=F.run,started=F.left!==F.len*60;
+ const lessons=S.plan.filter(p=>p.d===wd()).sort((a,b)=>a.s.localeCompare(b.s));
+ const next=S.exams.filter(x=>!x.ok&&left(x.d)>=0).sort((a,b)=>a.d.localeCompare(b.d))[0];
+ const open=S.todo.filter(x=>!x.ok).length;
+ return `<h1>Hallo, los geht’s!</h1>${remBanners()}${notifCard()}
+ <div class="card"><div class="streak"><div class="flame">${st?'🔥':'🕯️'}</div><div><div class="num">${st}</div><div>${st===1?'Tag':'Tage'} in Folge</div></div></div>
+ <div class="mute" style="margin-top:8px">${ok?'Tagesziel erreicht. Bis morgen!':'Heute noch offen: eine Fokus-Runde oder ein Quiz.'}</div><div class="dots">${dots}</div></div>
+ <div class="card"><h2>Fokusmodus</h2>
+ <div class="seg"><button class="btn sec ${F.len===15?'on':''}" onclick="setLen(15)">15 Min</button><button class="btn sec ${F.len===30?'on':''}" onclick="setLen(30)">30 Min</button></div>
+ <div class="timer" id="ft" aria-live="off">${fmt(F.left)}</div>
+ <div class="row">${run?'<button class="btn big sec" onclick="pauseF()">Pause</button>':`<button class="btn big ok" onclick="startF()">${started?'Weiter':'Starten'}</button>`}${started||run?'<button class="btn sec" onclick="stopF()">Abbrechen</button>':''}</div>
+ <div class="mute" style="margin-top:10px">Insgesamt fokussiert: ${S.min} Min</div></div>
+ <div class="card"><h2>Heute im Plan</h2>${lessons.length?lessons.map(p=>`<div class="item"><div class="t"><b>${e(p.n)}</b><div class="mute">${p.s}–${p.e}${p.r?' · '+e(p.r):''}</div></div></div>`).join(''):'<div class="mute">Heute keine Veranstaltungen eingetragen.</div>'}</div>
+ <div class="card row sp"><div><b>${open}</b> offene Aufgaben</div>${next?`<span class="tag warn">${e(next.n)}: ${left(next.d)===0?'heute':'in '+left(next.d)+' T.'}</span>`:'<span class="tag">Keine Klausur offen</span>'}</div>`;
+}
+
+function vPlan(){
+ const L=S.plan.filter(p=>p.d===pd).sort((a,b)=>a.s.localeCompare(b.s));
+ return `<h1>Stundenplan</h1><div class="days">${DAYS.map((n,i)=>`<button class="btn sec ${pd===i?'on':''}" onclick="pd=${i};render()">${n}</button>`).join('')}</div>
+ <div class="card">${L.length?L.map(p=>`<div class="item"><div class="t"><b>${e(p.n)}</b><div class="mute">${p.s}–${p.e}${p.r?' · '+e(p.r):''}</div></div><button class="x" aria-label="Löschen" onclick="del('plan','${p.id}')">×</button></div>`).join(''):'<div class="mute">Noch nichts für diesen Tag. Trag unten deine erste Veranstaltung ein.</div>'}</div>
+ <div class="card"><h2>Veranstaltung hinzufügen</h2><input id="pn" placeholder="Fach, z. B. Statistik"><div class="row"><input id="ps" type="time" aria-label="Beginn" value="08:00"><input id="pe" type="time" aria-label="Ende" value="09:30"></div><input id="pr" placeholder="Raum (optional)"><button class="btn big" onclick="addPlan()">Hinzufügen</button></div>`;
+}
+let pd=Math.min(wd(),5);
+function addPlan(){const n=val('pn');if(!n)return toast('Bitte ein Fach eintragen');S.plan.push({id:uid(),d:pd,n,s:val('ps'),e:val('pe'),r:val('pr')});save();render()}
+
+function vTodo(){
+ const L=S.todo.slice().sort((a,b)=>(a.ok-b.ok)||(a.d||'9').localeCompare(b.d||'9'));
+ return `<h1>Aufgaben</h1><div class="card">${L.length?L.map(x=>`<div class="item ${x.ok?'d':''}"><button class="chk ${x.ok?'on':''}" aria-label="Abhaken" onclick="tog('todo','${x.id}')">${x.ok?'✓':''}</button><div class="t">${e(x.t)}${x.c?`<div class="mute">${e(x.c)}</div>`:''}</div>${x.d?`<span class="tag ${!x.ok&&left(x.d)<=1?'warn':''}">${dfmt(x.d)}</span>`:''}<button class="x" aria-label="Löschen" onclick="del('todo','${x.id}')">×</button></div>`).join(''):'<div class="mute">Keine Aufgaben. Schreib unten die erste auf.</div>'}</div>
+ <div class="card"><h2>Neue Aufgabe</h2><input id="tt" placeholder="Was ist zu tun?"><input id="tc" placeholder="Fach (optional)"><input id="td" type="date" aria-label="Fällig am"><button class="btn big" onclick="addTodo()">Aufschreiben</button></div>`;
+}
+function addTodo(){const t=val('tt');if(!t)return toast('Bitte eine Aufgabe eintragen');S.todo.push({id:uid(),t,c:val('tc'),d:val('td'),ok:false});save();render()}
+
+function vExams(){
+ const L=S.exams.slice().sort((a,b)=>(a.ok-b.ok)||a.d.localeCompare(b.d));
+ return `<h1>Klausuren und Hausarbeiten</h1>${remBanners()}<div class="card">${L.length?L.map(x=>{const n=left(x.d);return `<div class="item ${x.ok?'d':''}"><button class="chk ${x.ok?'on':''}" aria-label="Als erledigt markieren" onclick="tog('exams','${x.id}')">${x.ok?'✓':''}</button><div class="t"><b>${e(x.n)}</b><div class="mute">${x.t||'Klausur'} · ${dfmt(x.d)}</div></div>${x.ok?'':`<span class="tag ${n>=0&&n<=7?'warn':''}">${n<0?'vorbei':n===0?'heute':'in '+n+' T.'}</span>`}<button class="x" aria-label="Löschen" onclick="del('exams','${x.id}')">×</button></div>`}).join(''):'<div class="mute">Noch keine Klausur eingetragen.</div>'}</div>
+ <div class="card"><h2>Termin hinzufügen</h2><select id="et" aria-label="Art"><option>Klausur</option><option>Hausarbeit</option></select><input id="en" placeholder="Fach"><input id="ed" type="date" aria-label="Datum"><button class="btn big" onclick="addExam()">Hinzufügen</button></div>`;
+}
+function addExam(){const n=val('en'),d=val('ed');if(!n||!d)return toast('Fach und Datum werden gebraucht');S.exams.push({id:uid(),n,d,t:val('et'),ok:false});save();render()}
+
+function tog(k,id){const x=S[k].find(i=>i.id===id);x.ok=!x.ok;save();render()}
+function del(k,id){S[k]=S[k].filter(i=>i.id!==id);save();render()}
+
+/* Lernen: Ordner > Unterordner > Karten */
+let NV={f:null,s:null},Q=null;
+const fol=()=>S.folders.find(f=>f.id===NV.f);
+const sub=()=>{const f=fol();return f&&f.subs.find(s=>s.id===NV.s)};
+function vCards(){
+ if(Q)return vQuiz();
+ const F0=fol(),D=sub();
+ if(!F0)return `<h1>Vokabeln und Lernen</h1>${S.folders.map(f=>`<div class="card row sp"><div><b>📁 ${e(f.n)}</b><div class="mute">${f.subs.length} Unterordner · ${f.subs.reduce((a,s)=>a+s.c.length,0)} Karten</div></div><div class="row"><button class="btn" onclick="NV.f='${f.id}';render()">Öffnen</button><button class="x" aria-label="Ordner löschen" onclick="delFol('${f.id}')">×</button></div></div>`).join('')}
+ <div class="card"><h2>Neuer Ordner</h2><input id="dn" placeholder="Name des Ordners"><button class="btn big" onclick="addFol()">Ordner anlegen</button></div>`;
+ if(!D)return `<button class="btn sec" onclick="NV.f=null;render()">Zurück</button><h1 style="margin-top:12px">📁 ${e(F0.n)}</h1>${F0.subs.length?F0.subs.map(s=>`<div class="card row sp"><div><b>${e(s.n)}</b><div class="mute">${s.c.length} Karten</div></div><div class="row"><button class="btn" onclick="NV.s='${s.id}';render()">Öffnen</button><button class="x" aria-label="Unterordner löschen" onclick="delSub('${s.id}')">×</button></div></div>`).join(''):'<div class="card mute">Noch kein Unterordner. Lege unten den ersten an.</div>'}
+ <div class="card"><h2>Neuer Unterordner</h2><input id="dn" placeholder="Name des Unterordners"><button class="btn big" onclick="addSub()">Unterordner anlegen</button></div>`;
+ return `<button class="btn sec" onclick="NV.s=null;render()">Zurück</button><h1 style="margin-top:12px">${e(F0.n)} › ${e(D.n)}</h1>
+ <div class="card"><h2>Quiz und Üben</h2><div class="row wrap"><button class="btn ok" onclick="startQ('mc')">Quiz: Auswählen</button><button class="btn ok" onclick="startQ('type')">Quiz: Tippen</button><button class="btn sec" onclick="startQ('flip')">Karten üben</button></div><div class="mute" style="margin-top:8px">Das Auswahl-Quiz braucht mindestens 3 Karten.</div></div>
+ <div class="card">${D.c.length?D.c.map(c=>`<div class="item"><div class="t"><b>${e(c.f)}</b><div class="mute">${e(c.b)}</div></div><button class="x" aria-label="Karte löschen" onclick="delCard('${c.id}')">×</button></div>`).join(''):'<div class="mute">Noch keine Karten in diesem Unterordner.</div>'}</div>
+ <div class="card"><h2>Neue Karte</h2><input id="cf" placeholder="Vorderseite (Vokabel oder Frage)"><input id="cb" placeholder="Rückseite (Antwort)"><button class="btn big" onclick="addCard()">Karte speichern</button></div>`;
+}
+function addFol(){const n=val('dn');if(!n)return toast('Bitte einen Namen eintragen');S.folders.push({id:uid(),n,subs:[]});save();render()}
+function delFol(id){S.folders=S.folders.filter(f=>f.id!==id);save();render()}
+function addSub(){const n=val('dn');if(!n)return toast('Bitte einen Namen eintragen');fol().subs.push({id:uid(),n,c:[]});save();render()}
+function delSub(id){const f=fol();f.subs=f.subs.filter(s=>s.id!==id);save();render()}
+function addCard(){const f=val('cf'),b=val('cb');if(!f||!b)return toast('Vorder- und Rückseite ausfüllen');sub().c.push({id:uid(),f,b});save();render();document.getElementById('cf').focus()}
+function delCard(id){const D=sub();D.c=D.c.filter(c=>c.id!==id);save();render()}
+function startQ(mode){const D=sub();
+ if(!D.c.length)return toast('Füge zuerst Karten hinzu');
+ if(mode==='mc'&&D.c.length<3){toast('Zu wenige Karten für die Auswahl, du übst stattdessen die Karten');mode='flip'}
+ Q={mode,cards:shuffle(D.c),i:0,score:0,rev:false,pick:null,fin:false};prep();render()}
+function prep(){const c=Q.cards[Q.i];Q.opts=shuffle([c,...shuffle(sub().c.filter(x=>x.id!==c.id)).slice(0,2)])}
+const norm=s=>s.toLowerCase().replace(/[^\p{L}\p{N}]+/gu,' ').trim();
+function chk(){const ok=norm(document.getElementById('ta').value)===norm(Q.cards[Q.i].b);Q.pick=ok;if(ok)Q.score++;render()}
+function typeQ(c,head){return `<div class="card">${head}<div class="q">${e(c.f)}</div>${Q.pick===null?`<input id="ta" placeholder="Deine Antwort" autocomplete="off" onkeydown="if(event.key==='Enter')chk()"><button class="btn big" onclick="chk()">Prüfen</button>`:`<div class="q" style="color:${Q.pick?'var(--ok)':'var(--bad)'}">${Q.pick?'Richtig!':'Fast. Richtig ist:'}</div>${Q.pick?'':`<div class="q">${e(c.b)}</div>`}<button class="btn big" onclick="nextQ()">Weiter</button>`}</div>`}
+function nextQ(){Q.i++;if(Q.i>=Q.cards.length){Q.fin=true;done()}else{Q.rev=false;Q.pick=null;prep()}render()}
+function vQuiz(){
+ if(Q.fin)return `<div class="card" style="text-align:center"><div class="flame">🎉</div><h1>${Q.score} von ${Q.cards.length} richtig</h1><div class="mute" style="margin-bottom:14px">Streak: ${streak()} ${streak()===1?'Tag':'Tage'} 🔥</div><button class="btn big" onclick="Q=null;render()">Fertig</button></div>`;
+ const c=Q.cards[Q.i];
+ const head=`<div class="row sp"><span class="mute">Karte ${Q.i+1} von ${Q.cards.length}</span><button class="x" aria-label="Beenden" onclick="Q=null;render()">×</button></div>`;
+ if(Q.mode==='type')return typeQ(c,head);
+ if(Q.mode==='mc')return `<div class="card">${head}<div class="q">${e(c.f)}</div>${Q.opts.map((o,k)=>{const cls=Q.pick===null?'':(o.id===c.id?'right':(Q.pick===k?'wrong':''));return `<button class="btn sec opt ${cls}" onclick="pick(${k})">${e(o.b)}</button>`}).join('')}${Q.pick!==null?'<button class="btn big" onclick="nextQ()">Weiter</button>':''}</div>`;
+ return `<div class="card">${head}<div class="q">${e(c.f)}</div>${Q.rev?`<div class="q" style="color:var(--acl)">${e(c.b)}</div><div class="row"><button class="btn big bad" onclick="rate(0)">Nochmal</button><button class="btn big ok" onclick="rate(1)">Gewusst</button></div>`:'<button class="btn big" onclick="Q.rev=true;render()">Antwort zeigen</button>'}</div>`;
+}
+function pick(k){if(Q.pick!==null)return;Q.pick=k;if(Q.opts[k].id===Q.cards[Q.i].id)Q.score++;render()}
+function rate(ok){Q.score+=ok;nextQ()}
+/* Erinnerungen: 1 Monat, 3 Wochen, 2 Wochen, 1 Woche vorher */
+const MS=[[7,'1 Woche'],[14,'2 Wochen'],[21,'3 Wochen'],[30,'1 Monat']];
+function ms(n){for(const m of MS)if(n<=m[0])return m;return null}
+function remBanners(){return S.exams.filter(x=>!x.ok&&left(x.d)>=0).map(x=>[x,ms(left(x.d))]).filter(r=>r[1]&&r[0].seen!==r[1][0]).map(r=>{const n=left(r[0].d);return `<div class="rem"><div style="font-size:30px">⏰</div><div class="t" style="flex:1"><b>${e(r[0].n)} (${r[0].t||'Klausur'})</b>${n===0?'Heute ist es soweit!':'Noch '+n+(n===1?' Tag':' Tage')+' – Erinnerung: '+r[1][1]+' vorher'}</div><button class="btn" onclick="seen('${r[0].id}',${r[1][0]})">Okay</button></div>`}).join('')}
+function seen(id,m){S.exams.find(x=>x.id===id).seen=m;save();render()}
+/* Motivation beim Öffnen */
+const QUOTES=['Kleine Schritte zählen. Heute ist einer davon.','Du musst nicht perfekt sein, nur dranbleiben.','Eine Seite am Tag ist besser als zehn am Vorabend.','Fang an, bevor du bereit bist.','Dein zukünftiges Ich sagt jetzt schon danke.','Fokus für 15 Minuten. Mehr braucht der Anfang nicht.','Fehler sind Lernspuren, keine Stolpersteine.','Heute lernen, morgen leichter atmen.','Jede Karteikarte bringt dich näher ans Ziel.','Du schaffst mehr, als du denkst.','Streak halten heißt: Du bleibst dir treu.','Müde? Dann nur zehn Minuten. Meistens wird mehr daraus.'];
+function showQuote(){document.getElementById('quote').innerHTML=`<div><div class="flame">✨</div><p>${e(QUOTES[Math.floor(Math.random()*QUOTES.length)])}</p><button class="btn big" style="max-width:320px" onclick="document.getElementById('quote').style.display='none'">Los geht’s</button></div>`}
+/* Lernmethoden */
+const TIPS=[['⏱️','Mini-Sprints','Starte nur 15 Minuten. Ein kurzer Start senkt die Hürde, danach darfst du aufhören oder weitermachen.',1],['🧩','Aufgaben zerlegen','Mach aus „Hausarbeit schreiben“ kleine Schritte: Thema wählen, drei Quellen suchen, Gliederung, erster Absatz. Hake jeden Schritt ab.'],['🃏','Aktiv abrufen','Karteikarten und Quiz statt nur Lesen. Abrufen hält die Aufmerksamkeit wach und prägt sich besser ein.'],['👥','Body Doubling','Lerne parallel mit jemandem, in der Bibliothek oder per Videocall. Gesellschaft hilft beim Dranbleiben.'],['🔕','Reize reduzieren','Handy in einen anderen Raum, Benachrichtigungen aus, nur das Nötige auf dem Tisch.'],['🚶','Bewegungspause','Nach jedem Sprint 3 bis 5 Minuten aufstehen, trinken, strecken. Danach geht es meist frischer weiter.'],['🎨','Bunt und laut','Nutze Farben, Skizzen und Mindmaps. Erkläre den Stoff laut, als würdest du ihn jemandem beibringen.'],['🎁','Sofort belohnen','Streak, Haken und danach etwas Kleines, auf das du dich freust. Schnelle Belohnung wirkt stärker als ein fernes Ziel.'],['📅','Feste Lernzeit','Gleiche Uhrzeit, gleicher Ort. Eine Routine spart Entscheidungsenergie.']];
+function vTips(){return `<h1>Lernmethoden</h1><div class="mute" style="margin-bottom:12px">Kurz, konkret und gut machbar, auch wenn die Konzentration schwankt.</div>${TIPS.map(t=>`<div class="card"><h2>${t[0]} ${t[1]}</h2>${t[2]}${t[3]?`<div style="margin-top:10px"><button class="btn" onclick="setLen(15);go('home')">15-Min-Sprint vorbereiten</button></div>`:''}</div>`).join('')}`}
+/* Benachrichtigungen */
+function push(t,b){let sub=false;try{sub=!!localStorage.getItem('uni-sub')}catch(x){}
+ if(!sub&&swReg&&'Notification' in window&&Notification.permission==='granted')swReg.showNotification(t,{body:b,icon:'icon-192.png'});else toast(t+': '+b)}
+function notifyDue(){if(!('Notification' in window)||Notification.permission!=='granted')return;S.exams.filter(x=>!x.ok&&left(x.d)>=0).forEach(x=>{const n=left(x.d),m=ms(n);if(!m)return;const k=x.id+'-'+m[0];if(!S.notified[k]){S.notified[k]=1;push(x.n+': noch '+n+(n===1?' Tag':' Tage'),m[1]+'-Marke. '+(x.t==='Hausarbeit'?'Schreib heute an der Hausarbeit.':'Lern heute für die Klausur.'))}});save()}
+async function askNotif(){try{const p=await subscribe();toast(p==='granted'?'Benachrichtigungen sind an':'Nicht erlaubt: '+p)}catch(x){toast('Nicht möglich. Öffne die App vom Home-Bildschirm.')}showDiag()}
+function showDiag(){const sa=navigator.standalone===true||matchMedia('(display-mode: standalone)').matches;
+ const R=[['Als Web-App vom Home-Bildschirm geöffnet',sa],['Seite läuft nicht in einem eingebetteten Rahmen',window.top===window],['Notification-API vorhanden','Notification' in window],['Service Worker unterstützt','serviceWorker' in navigator],['PushManager vorhanden','PushManager' in window]];
+ const p='Notification' in window?Notification.permission:'nicht verfügbar';
+ document.getElementById('dg').innerHTML=R.map(r=>`<div>${r[1]?'✅':'❌'} ${r[0]}</div>`).join('')+`<div>🔐 Berechtigung: <b>${e(p)}</b></div><div class="mute" style="margin-top:8px">Push-Server: ${PUSH_URL.includes('DEIN')?'nicht eingerichtet':'eingetragen'}. Ohne Server kommen Meldungen nur bei geöffneter App.</div>`}
+function notifCard(){return `<div class="card"><h2>Benachrichtigungen</h2><div class="mute" style="margin-bottom:10px">Meldungen erscheinen in der App, solange sie offen ist. Mit der Diagnose siehst du, was dein Gerät zulässt.</div><div class="row wrap"><button class="btn" onclick="askNotif()">Einschalten</button><button class="btn sec" onclick="showDiag()">Diagnose</button></div><div id="dg" style="margin-top:10px;font-size:14px"></div></div>`}
+/* Streak-Alarm ab 22 Uhr */
+const hms=s=>pad(Math.floor(s/3600))+':'+pad(Math.floor(s%3600/60))+':'+pad(s%60);
+function alarm(){const el=document.getElementById('alarm'),n=new Date();if(S.last===today()||n.getHours()<22){el.innerHTML='';return}const r=Math.floor((new Date(n.getFullYear(),n.getMonth(),n.getDate()+1)-n)/1000);el.innerHTML=`Streak in Gefahr, noch bis Mitternacht<b>${hms(r)}</b>Mach einen Fokus-Block, Karteikarten oder ein Quiz`;if(S.alarmDay!==today()){S.alarmDay=today();save();push('Streak in Gefahr','Es ist 22 Uhr. Fokus, Karteikarten oder Quiz rettet deinen Streak.')}}
+setInterval(alarm,1000);
+showQuote();
+render();alarm();notifyDue();
+</script>
+</body></html>
